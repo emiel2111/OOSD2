@@ -80,6 +80,18 @@ In het project zijn er twee repositories:
 
 Ze werken samen met mapper-klassen die de SQL-commando's uitvoeren.
 
+## 7. Illustreer hoe en tot welke producten je tijdens de analyse van UC x bent gekomen.
+
+Voor de analyse van bijvoorbeeld UC4 (Speel ronde) ben ik begonnen met het bestuderen van de use case en de domeinregels. Eerst heb ik een domeinmodel opgesteld met alle relevante klassen zoals Spel, Speler, Zetsteen, Gebouwsteen, etc. en hun onderlinge relaties.
+
+Daarna heb ik een activiteitendiagram (AD) gemaakt dat visueel weergeeft hoe het proces van een ronde spelen verloopt, met de verschillende stappen zoals het bepalen van de speler aan de beurt, het toevoegen van beloningen en het berekenen van de punten.
+
+Vervolgens heb ik systeem sequentiediagrammen (SSD) opgesteld die tonen hoe de applicatie interageert met de gebruiker tijdens het spelen van een ronde. Bijvoorbeeld hoe een speler zijn beurt speelt en hoe het systeem reageert.
+
+Op basis van de SSD's heb ik operatiecontracten (OC's) opgesteld die precies beschrijven wat er gebeurt bij elke operatie, zoals welke objecten worden aangemaakt of gewijzigd. Bijvoorbeeld voor de operatie 'pasScoresVanSpelersAan' heb ik beschreven welke klassen hierbij betrokken zijn en wat de pre- en postcondities zijn.
+
+Al deze producten hebben samen geleid tot een volledig begrip van de use case voordat ik begon aan het ontwerp.
+
 ## 8. Illustreer hoe doing en knowing verantwoordelijkheden gescheiden worden gehouden in het project.
 
 In het project is een duidelijk onderscheid tussen 'knowing' (weten) en 'doing' (doen) verantwoordelijkheden:
@@ -246,15 +258,3 @@ Concrete verschillen in ons project:
 - In het domeinmodel hebben we geen repositories, maar in het DCD wel (`SpelerRepository`, `SpelRepository`)
 - In het EERD hebben we een SPELER_SPEL koppeltabel, terwijl in het DCD dit een verzameling is binnen de Spel-klasse
 - Het DCD bevat veel meer details zoals de exacte implementatie van methodes als `plaatsZetsteen()` en `vulFichesAan()`
-
-## 7. Illustreer hoe en tot welke producten je tijdens de analyse van UC x bent gekomen.
-
-Voor de analyse van bijvoorbeeld UC4 (Speel ronde) ben ik begonnen met het bestuderen van de use case en de domeinregels. Eerst heb ik een domeinmodel opgesteld met alle relevante klassen zoals Spel, Speler, Zetsteen, Gebouwsteen, etc. en hun onderlinge relaties.
-
-Daarna heb ik een activiteitendiagram (AD) gemaakt dat visueel weergeeft hoe het proces van een ronde spelen verloopt, met de verschillende stappen zoals het bepalen van de speler aan de beurt, het toevoegen van beloningen en het berekenen van de punten.
-
-Vervolgens heb ik systeem sequentiediagrammen (SSD) opgesteld die tonen hoe de applicatie interageert met de gebruiker tijdens het spelen van een ronde. Bijvoorbeeld hoe een speler zijn beurt speelt en hoe het systeem reageert.
-
-Op basis van de SSD's heb ik operatiecontracten (OC's) opgesteld die precies beschrijven wat er gebeurt bij elke operatie, zoals welke objecten worden aangemaakt of gewijzigd. Bijvoorbeeld voor de operatie 'pasScoresVanSpelersAan' heb ik beschreven welke klassen hierbij betrokken zijn en wat de pre- en postcondities zijn.
-
-Al deze producten hebben samen geleid tot een volledig begrip van de use case voordat ik begon aan het ontwerp.
