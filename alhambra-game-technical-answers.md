@@ -169,6 +169,63 @@ In het project zijn er twee repositories:
 
 Ze werken samen met mapper-klassen die de SQL-commando's uitvoeren.
 
+## 6. Wat doet een mapperklasse? Bespreek de code van een methode in zo'n mapperklasse.
+
+Een mapperklasse is verantwoordelijk voor het transformeren van domeinobjecten naar databasegegevens en omgekeerd. Het is een onderdeel van de persistentielaag die de directe interactie met de database afhandelt.
+
+Voorbeeld uit `SpelerMapper.java`:
+
+```java
+public void voegToe(Speler speler) {
+    try (Connection conn = DriverManager.getConnection(Connectie.JDBC_URL);
+            PreparedStatement query = conn.prepareStatement(INSERT_SPELER)) {
+        query.setString(1, speler.getGebruikersnaam());
+        query.setInt(2, speler.getGeboortejaar());
+        query.setInt(3, speler.getAantalGewonnen());
+        query.setInt(4, speler.getAantalGespeeld());
+
+        query.executeUpdate();
+
+    } catch (SQLException ex) {
+        throw new RuntimeException(ex);
+    }
+}
+```
+
+**Wat deze methode doet:**
+1. **Verbinding maken**: Maakt een databaseverbinding met `DriverManager.getConnection()`
+2. **Query voorbereiden**: Maakt een `PreparedStatement` met SQL om een speler toe te voegen
+3. **Parameters instellen**: Zet de domeinobjecteigenschappen om in SQL-parameters
+4. **Query uitvoeren**: Voert de query uit met `executeUpdate()`
+5. **Resourcebeheer**: Gebruikt try-with-resources om verbindingen correct te sluiten
+6. **Foutafhandeling**: Vangt SQL-uitzonderingen op en zet ze om in RuntimeExceptions
+
+Een andere methode in dezelfde klasse doet het omgekeerde: het omzetten van databaseresultaten naar domeinobjecten:
+
+```java
+public Speler geefSpeler(String gebruikersnaam) {
+    Speler speler = null;
+
+    try (Connection conn = DriverManager.getConnection(Connectie.JDBC_URL);
+            PreparedStatement query = conn.prepareStatement(GEEF_SPELER)) {
+        query.setString(1, gebruikersnaam);
+        try (ResultSet rs = query.executeQuery()) {
+            if (rs.next()) {
+                int geboortejaar = rs.getInt("geboortejaar");
+                int aantalGewonnen = rs.getInt("aantalGewonnen");
+                int aantalGespeeld = rs.getInt("aantalGespeeld");
+
+                speler = new Speler(gebruikersnaam, geboortejaar, aantalGewonnen, aantalGespeeld);
+            }
+        }
+    } catch (SQLException ex) {
+        throw new RuntimeException(ex);
+    }
+
+    return speler;
+}
+```
+
 ## 7. Illustreer hoe en tot welke producten je tijdens de analyse van UC x bent gekomen.
 
 Voor de analyse van bijvoorbeeld UC4 (Speel ronde) ben ik begonnen met het bestuderen van de use case en de domeinregels. Eerst heb ik een domeinmodel opgesteld met alle relevante klassen zoals Spel, Speler, Zetsteen, Gebouwsteen, etc. en hun onderlinge relaties.
