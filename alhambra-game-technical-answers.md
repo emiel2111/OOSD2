@@ -39,6 +39,95 @@ Label lblTitel = new Label(taal.geef("resultaatscherm.eindresultaat"));
 
 Het nut is dat de applicatie eenvoudig meertalig gemaakt kan worden. De taal kan worden gewijzigd zonder de code aan te passen, enkel door een andere resourcebundle te selecteren.
 
+## 2. Wat is het nut/voordeel van de javadoc-comment? Toon aan.
+
+Javadoc-comments zijn speciaal geformatteerde commentaren die worden gebruikt om automatisch API-documentatie te genereren.
+
+**Nut/voordelen:**
+1. **Consistente documentatie**: Standaard format voor alle code
+2. **Automatische generatie**: Genereer HTML-documentatie
+3. **IDE-integratie**: Toon documentatie tijdens het programmeren als tooltips
+4. **Code begrijpelijkheid**: Maakt het makkelijker voor andere ontwikkelaars om de code te begrijpen
+
+Een voorbeeld uit de `GebouwpuntGebied.java` klasse:
+
+```java
+/**
+ * De GebouwpuntGebied klasse vertegenwoordigt een gebied met verschillende
+ * gebouwen die overeenkomen met specifieke dobbelkleuren. Elk gebouw heeft een
+ * bijbehorende lijst van gebouwstenen die in het gebied geplaatst kunnen
+ * worden.
+ */
+public class GebouwpuntGebied extends Gebied {
+    // ...
+    
+    /**
+     * Haalt het gebouw op dat overeenkomt met de opgegeven dobbelkleur.
+     * 
+     * @param dKleur de DobbelKleur van het gewenste gebouw
+     * @return het GebouwVanGebouwpuntGebied dat overeenkomt met de opgegeven
+     *         dobbelkleur
+     */
+    public GebouwVanGebouwpuntGebied geefGebouw(DobbelKleur dKleur) {
+        // implementatie
+    }
+}
+```
+
+Dit genereert documentatie die alle parameters, return types en een algemene beschrijving van de functie bevat. Zeer nuttig bij het samenwerken in teams of wanneer anderen je code moeten gebruiken.
+
+## 3. Toon aan dat je applicatie voor UC.... een robuuste applicatie is.
+
+Als voorbeeld voor UC1 (Registreer nieuwe speler), maakt je applicatie gebruik van verschillende technieken om robuustheid te garanderen:
+
+**1. Invoervalidatie**: In de `Speler.java` klasse worden gebruikersnaam en geboortejaar grondig gevalideerd:
+
+```java
+private void setGebruikersnaam(String gebruikersnaam) {
+    if (gebruikersnaam == null || gebruikersnaam.isBlank() || gebruikersnaam.length() < 6)
+        throw new IllegalArgumentException(taal.geef("fout.gebruikersnaamOngeldig"));
+    this.gebruikersnaam = gebruikersnaam;
+}
+
+private void setGeboortejaar(int geboortejaar) {
+    int huidigJaar = LocalDate.now().getYear();
+    if (geboortejaar > huidigJaar - 6 || geboortejaar < huidigJaar - 100)
+        throw new IllegalArgumentException(taal.geef("fout.geboortejaarOngeldig"));
+    this.geboortejaar = geboortejaar;
+}
+```
+
+**2. Exception handling**: In `Applicatie.java` worden exceptions opgevangen en gebruikersvriendelijk getoond:
+
+```java
+try {
+    registreerSpeler();
+    ok = true;
+} catch (IllegalArgumentException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+**3. Database-integriteit**: In `SpelerRepository.java` wordt gecontroleerd of een gebruikersnaam al bestaat voordat een nieuwe speler wordt toegevoegd:
+
+```java
+public void voegToe(Speler speler) {
+    if (bestaatSpeler(speler.getGebruikersnaam()))
+        throw new GebruikersnaamInGebruikException();
+    mapper.voegToe(speler);
+}
+```
+
+**4. Testen**: Unit tests zoals `SpelerTest.java` controleren of de regels correct worden toegepast.
+
+Dit maakt de applicatie robuust omdat het:
+- Gebruikersinvoer controleert
+- Fouten netjes afhandelt
+- Data-integriteit waarborgt
+- Gedrag verifieert via tests
+
+
+
 ## 4. Wat is de taak/zijn de verantwoordelijkheden van een DomeinController?
 
 De DomeinController heeft drie hoofdtaken:
